@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Love Journey</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            text-align: center;
+            background-color: #ffe6e6;
+            color: #ff3e3e;
+            overflow: hidden;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .buttons {
+            margin-top: 30px;
+        }
+
+        .button {
+            font-size: 1.2em;
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 15px;
+            background-color: #ff6666;
+            color: white;
+            transition: 0.3s;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .fadeIn {
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .fadeOut {
+            animation: fadeOut 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
+
+        .heart {
+            font-size: 2em;
+            color: #ff4d4d;
+        }
+
+        .sticker {
+            font-size: 2em;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-30px);
+            }
+            60% {
+                transform: translateY(-15px);
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1 id="mainText">It's been a year together, My LOVE. If you want to live the rest of your life with me, you have to accept some things, are you ready ???</h1>
+
+        <div class="buttons" id="initialButtons">
+            <button class="button" id="yesButton">YES</button>
+            <button class="button" id="noButton">NO</button>
+        </div>
+
+        <!-- Promise Section -->
+        <div id="promises" class="hidden">
+            <h2 id="promiseTitle"></h2>
+            <p id="promiseText"></p>
+            <div class="buttons">
+                <button class="button" id="acceptButton">I accept</button>
+                <button class="button" id="rejectButton">I reject</button>
+            </div>
+        </div>
+
+        <!-- Final Message -->
+        <h1 id="finalMessage" class="hidden"></h1>
+        <p id="finalNote" class="hidden"></p>
+        <div class="hidden" id="endSticker">❤️💋</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            let promises = [
+                {title: "Promise 1", text: "Mere sath hamesha rahoge?"},
+                {title: "Promise 2", text: "Gussa hone par pyaar see manaoge 🥹?"},
+                {title: "Promise 3", text: "Mere gusse par aap gussa nahi karoge 😤"},
+                {title: "Promise 4", text: "Khana nahi khaunga tho aapne haatho see pyaar see khiloge 😁💓"},
+                {title: "Promise 5", text: "Mere nakhre uthoge 😁"},
+                {title: "Promise 6", text: "Aapna pyaar express karoge 😤💖"},
+                {title: "Promise 7", text: "Surprises and gifts doge 😁❤️"},
+                {title: "Promise 8", text: "Mujhe seduce karoge 🥵"},
+                {title: "Promise 9", text: "Tadpaoge nahi 😤"},
+                {title: "Promise 10", text: "Mere liye ready hoke snaps bhejoge 😤"},
+                {title: "Promise 11", text: "Mere liye dance karoge ❤️😁"},
+                {title: "Promise 12", text: "I can kiss you without your permission ❤️😁"},
+                {title: "Promise 13", text: "I can hug you anytime ❤️"},
+                {title: "Promise 14", text: "Tasty khana banana sikhoge mere liye 😁❤️"},
+                {title: "Promise 15", text: "Zyada gussa nahi karoge 😁❤️"},
+                {title: "Promise 16", text: "I can have romance with you anywhere 😁"},
+                {title: "Promise 17", text: "You won't hide your pain from me 🥹"},
+                {title: "Promise 18", text: "You will share everything with me, whatever hurts you 🥹"},
+                {title: "Promise 19", text: "You will help me in my life decisions and guide me 🥹❤️"},
+                {title: "Promise 20", text: "Forgive me for my mistakes 🥹❤️"}
+            ];
+
+            let currentPromise = 0;
+
+            const yesButton = document.getElementById('yesButton');
+            const noButton = document.getElementById('noButton');
+            const initialButtons = document.getElementById('initialButtons');
+            const mainText = document.getElementById('mainText');
+            const promisesSection = document.getElementById('promises');
+            const promiseTitle = document.getElementById('promiseTitle');
+            const promiseText = document.getElementById('promiseText');
+            const acceptButton = document.getElementById('acceptButton');
+            const rejectButton = document.getElementById('rejectButton');
+            const finalMessage = document.getElementById('finalMessage');
+            const finalNote = document.getElementById('finalNote');
+            const endSticker = document.getElementById('endSticker');
+
+            // Show the first promise when "YES" is clicked
+            yesButton.addEventListener('click', function() {
+                mainText.classList.add('fadeOut');
+                initialButtons.classList.add('fadeOut');
+                setTimeout(() => {
+                    initialButtons.style.display = 'none';
+                    mainText.style.display = 'none';
+                    promisesSection.classList.remove('hidden');
+                    showPromise();
+                }, 1000); // Wait for fade-out effect
+            });
+
+            // Move "NO" button randomly when clicked
+            noButton.addEventListener('click', function() {
+                const randomX = Math.random() * (window.innerWidth - noButton.clientWidth);
+                const randomY = Math.random() * (window.innerHeight - noButton.clientHeight);
+                noButton.style.position = 'absolute';
+                noButton.style.left = randomX + 'px';
+                noButton.style.top = randomY + 'px';
+            });
+
+            // Show the current promise
+            function showPromise() {
+                if (currentPromise < promises.length) {
+                    promiseTitle.innerText = promises[currentPromise].title;
+                    promiseText.innerText = promises[currentPromise].text;
+                    promiseTitle.classList.add('fadeIn');
+                    promiseText.classList.add('fadeIn');
+                } else {
+                    promisesSection.classList.add('hidden');
+                    finalMessage.classList.remove('hidden');
+                    finalMessage.innerText = "So you accept everything, and are ready to spend your life with me forever. I LOVE YOU THE MOST BABY DOLL 🥹❤️";
+                    finalNote.classList.remove('hidden');
+                    finalNote.innerText = "If you break these promises, mai aapka much tod dunga samjhe, you should remember all the promises you made, for your life ❤️";
+                    endSticker.classList.remove('hidden');
+                }
+            }
+
+            // Handle "I accept" button
+            acceptButton.addEventListener('click', function() {
+                currentPromise++;
+                showPromise();
+            });
+
+            // Handle "I reject" button (disable and hide after first click)
+            rejectButton.addEventListener('click', function() {
+                rejectButton.classList.add('hidden');
+            });
+
+        });
+    </script>
+
+</body>
+</html>
